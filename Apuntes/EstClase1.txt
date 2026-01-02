@@ -1,0 +1,185 @@
+Definiciones Basicas:
+	Dato: 
+		Unidad de informacion distinguible y manipulable 
+	
+	Expresion: 
+		Combinacion de simbolos que representa un dato
+		Se forma a partir de constantes, variables y funciones 
+		Pueden evaluarse para obtener su valor 
+	
+	Tipo de datos: 
+		Atributo para clasificar expresiones
+		Impone restricciones a la combinaciones posibles 
+		
+	Sistema de tipos:
+		Conjunto de reglas para asignar tipo a las expresiones 
+		Usualmente se ejecuta durante la compilacion  
+		
+	Funcion:
+		Expresion que permite transformar otras expresiones 
+		Transforma argumentos en un resultado
+		Se nombran mediante identificadores 
+		Se escribe la funcion y a continuacion sus argumentos 
+			multiplicar 2 3 da 6 
+			sumar 1 (multiplicar 2 3) da 7 
+		LOS ARGUMENTOS NO SE PASAN CON PARENTESIS 
+		LOS PARENTESIS SE USAN PARA AGRUPAR COSAS 
+	
+	Estructura de datos 
+		Formas de organizar datos para ser accedidos o manipulados de cierta manera 
+		
+Modelo de computacion 
+	Modelo destructivo o imperativo
+		Se ejecutan comandos que producen efectos
+		El programa va de un estado inicial a uno final
+		SE TRANSFORMA EL ESTADO
+		
+	Modelo funcional o denotacional 
+		Se evaluan expresiones que describen valores; el progama es una expresion y su resultado es el valor de esa expresion 
+		SE TRANSFORMAN ARGUMENTOS EN UN RESULTADO 
+Haskell
+	Es un lenguaje funcional puro
+		No hay memoria, ni estado de ningun tipo
+		Permite programar declarativamente 
+	Un programa en Haskell es un conjunto de definiciones de funciones y constantes 
+	Se utiliza evaluando una expresion 
+	EJEMPLO:
+		sumar :: Int -> Int -> Int -- Se indican los tipos  
+		sumar n m = n+m
+	Caracteristicas 
+		Los parametros van sin parentesis ni comas 
+		No hacen falta llaves ni return (se usa =)
+		Cada definicion puede indicar su tipo; el simbolo :: se lee "tiene tipo" 
+		Los argumentos se ponen separados por espacios 
+		Los parentesis se usan solamente para AGRUPAR EXPRESIONES 
+		Los comentarios de liena comienzan con --
+		Los comentarios de parrafo van entre {- -}
+		LA IDENTACION ES IMPORTANTE, SI NO FALLA 
+		Para funciones parciales puede usarse error 
+	Alternativa condicional 
+		if-then-else (son expresiones, no comandos)
+		Siempre tiene que haber un else 
+	Haskell tiene varios tipos basicos 
+		Numeros: int, Integer, Float, Double
+		Caracteres: Char ('a', 'b')
+		Booleanos: Bool 
+		String: String (lista de caracteres) "Hola" = ['H', 'o', 'l', 'a']
+		Cada uno tiene se propia sintaxis y operaciones 
+		
+Tipos algebraicos 
+	Se definen con la palabra clave data 
+	Para mostrar, se usa deriving Show
+	Ejemplos 
+		data Dir = Norte | Este | Sur | Oeste (tipo enumerado)
+				deriving Show (para mostrarlo)
+		Cada constructor determina un elemento 
+		data Persona = P String Int String (tipo registro)
+			       --Nombre Edad DNI
+	Tipos algebraicos variantes: enumerativos 
+		Se dan los constructores que definen los casos
+		Cada constructor determina un elemento 
+	Tipos algebraicos: registro
+		Se da un unico constructor con argumentos 
+		El constructor debe tener un nombre diferente al tipo 
+		
+	Ejemplos de uso 
+		direccionDefault :: Dir 
+		direccionDefault = Este 
+		
+		juan :: Persona 
+		juan = P "Juan" 23 "23345322"
+		El constructor del dato y el del tipo pueden llamarse distinto
+		
+	Tipos algebraicos variantes: sumas 
+		Los constructores pueden tener argumentos 
+			data Gusto = Chocolate | Sambayon | DDL | Frutilla 
+			data Helado = Vasito Gusto | Cucurucho Gusto Gusto | Pote Gusto Gusto Gusto
+			
+		Los tipos en posicion de argumento van SOLAMENTE en las declaraciones data
+		Significa que el constructor Vasito seguido de Gusto es un valor valido de Helado 
+		En el pattern matching, se usan variables
+			cambiarFrutilla Frutilla = Chocolate 
+			cambiarFrutilla g = g 
+			
+	Tuplas y tipos polimorficos
+		Tuplas 
+			Las Tuplas son estructuras de datos predefinidas 
+				Son similares a un registro, pero sin nombres de campo
+				Se escriben entre parentesis y con comas 
+				Son como el producto cartesiano en matematicas 
+				
+				Ejemplo 
+					unPar :: (Int,Bool)
+				Los parentesis y la coma funcionan como constructor, se puede hacer pattern matching 
+					fst :: (Int,Bool) -> Int 
+					fst (n,b) = n 
+					
+				Polimorfismo parametrico
+					Me permite definir funciones genericas
+						Una sola definicion opera sobre muchos tipos 
+						No es necesario redefinir
+					Permite definir estructuras de datos genericas 
+						Estructuras como "contadores de datos" 
+						Independencia del contenedor respecto al tipo de dato
+						Ejemplo
+							fst :: (a,b) -> a 
+					
+Pattern matching 
+	Los constructores se pueden usar para acceder
+	Para eso se usan los parametros 
+		Si el parametro coincide, usa esa alternativa 
+		Si no coincide, sigue evaluando 
+	Solo se aplica a constructores de tipos algebraicos 
+	
+		Ejemplo 
+			siguienteDir :: Dir 
+			siguienteDir Este = Sur
+			siguienteDir Sur = Oeste 
+			siguienteDir Oeste = Norte 
+			siguienteDir Norte = Este
+		Otra forma de escribirlo
+			siguienteDir :: Dir -> Dir 
+			siguienteDir d = 
+				case d of 
+					Norte -> Este 
+					Este -> Sur 
+					Sur -> Oeste 
+					Oeste -> Norte
+					
+ 	Tambien se pueden usar para definir observadores, no vienen predefinidos 
+ 		nombre :: Persona -> String 
+ 		nombre (P n e d) = n 
+ 		
+ 		edad :: Persona -> String 
+ 		edad(P n e d) = e 
+ 		Matchea los argumentos con las variables, tomando el valor 
+ 		
+ 	Acceso a tipos algebraicos 
+ 		El orden de las ecuaciones importa 
+ 		Si el parametro no se usa, se puede usar _ 
+ 	
+ 	Pattern matching vs funciones observadoras 
+ 		esMayorDeEdad' :: Persona -> Bool 
+ 		esMayorDeEdad' (P n e d) = e >=18
+ 		
+ 		esMayorDeEdad :: Persona -> Bool
+ 		esMayorDeEdad p = edad p >=18
+
+Listas 
+	Las operaciones de (:) y [] son constructores 
+	La operacion de agregar (++) no es predefinida; toma dos listas 
+	(:) toma un elemento y una lista 
+	Las variables de lista suelen terminar con la letra s 
+	Permite indicar que son muchos elementos
+	Los constructores pueden usarse para pattern matching 
+	La funcion (++) no es constructora; no se puede hacer pattern matching 
+	
+	NO SE PUEDE HACER PM CON ALGO QUE NO SEA UN CONSTRUCTOR
+		
+ 		
+ 		
+ 	
+ 		
+ 	
+ 		
+		
