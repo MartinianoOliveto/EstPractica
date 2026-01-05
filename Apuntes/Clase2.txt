@@ -1,0 +1,42 @@
+Listas 
+	Las listas son estructuras de datos predefinidas 
+	La operacion de agregar (++) no es predefinida 
+	Las operaciones de (:) y [] son constructores 
+	
+	(:) se lee cons o agregar adelante 
+		Toma un elemento de un tipo y una lista del mismo tipo y describe la lista que resulta de agregar ese elemento adelante en la lista 
+	[] se lee nil o lista vacia 
+		Es una lista vacia de un tipo a instanciar 
+		
+	Los constructores se pueden usar para pattern matching 
+	Permite indicar que son muchos elementos de 
+	La funcion de agregar no es constructora, no se puede hacer pattern matching 
+	
+	Recorridos sobre listas 
+		Se utiliza recursion estructural 
+		
+	Como pensar recursion
+		No ejecutarla, pensar como encontrar el resultado de la cola y como agregar el primer elemento a ese resultado
+		Para obtener el resultado de la cola, se utiliza la misma funcion 
+		No olvidar el caso base 
+		Ejemplo
+			sumarTodos :: [Int] -> Int 
+			sumarTodos [] = 
+			sumarTodos (n:ns) = n + sumarTodos ns 
+			
+	Los recorridos sobre listas con recursion estructural siempre tienen 2 casos
+		El caso base: en este caso tiene que cortar 
+		El caso recursivo: se utiliza la misma funcion que se define sobre una parte de la lista original (osea en la cola)
+		Solo hay que pensar como agregar el primer valor a lo calculado antes 
+
+Truco: Se usa Eq => a para decir que se pueden comparar los tipos, sirve para tipos algebraicos por ej 
+Siempre se piensa primero el caso inductivo y despues el caso base 
+
+Hay funciones recursivas no estructurales, no se pueden hacer recursion 
+	Si la funcion es parcial, se debe verificar la precondicion, osea cumplirla; se debe evitar la parcialidad 
+	
+Recursion sobre numeros 
+	El caso base es 0 
+	La parte recursiva de un numero es su anterior 
+	No se aplica a numeros negatvos 
+	
