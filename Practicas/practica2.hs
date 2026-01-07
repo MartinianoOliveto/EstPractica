@@ -46,7 +46,7 @@ pertenece e [] = False
 --caso recursivo 
 pertenece e (a:as) = if e == a 
                         then True 
-                            else False 
+                            else pertenece e as 
 --8 
 apariciones :: Eq a => a -> [a] -> Int 
 --caso base 
@@ -256,7 +256,104 @@ contarPorTipo tp [] = 0
 contarPorTipo tp (p:ps) = if esDeTipo tp p 
                             then 1 + contarPorTipo tp ps 
                                 else contarPorTipo tp ps 
+--3 
+data Seniority = Junior | Semisenior | Senior 
+    deriving Show 
+data Proyecto = ConsProyecto String 
+    deriving (Show, Eq) 
+data Rol = Developer Seniority Proyecto | Management Seniority Proyecto
+    deriving Show 
+data Empresa = ConsEmpresa [Rol]
+    deriving Show 
 
+--set de datos 
+--proyectos
+sistDePagos = ConsProyecto "Sistema de pagos"
+appMovil = ConsProyecto "App movil"
+pagWeb = ConsProyecto "Pagina web"
+iaService = ConsProyecto "Servicio de IA"
+--empleados
+--devs 
+dev1 = Developer Junior sistDePagos
+dev2 = Developer Senior appMovil
+dev3 = Developer Semisenior sistDePagos
+dev4 = Developer Junior iaService 
+dev5 = Developer Senior pagWeb
+--management 
+mng1 = Management Senior iaService 
+mng2 = Management Semisenior appMovil 
+--empresas 
+empresaVaga = ConsEmpresa [] --vacia
+empresaSimple = ConsEmpresa [dev1, dev2, mng1] --todos los proyectos son distintos 
+empresaGrande= ConsEmpresa [dev1, dev2, dev3, dev4, dev5, mng1, mng2] --empresa con los dos primeros proyectos repetidos 
+
+
+
+proyectos :: Empresa -> [Proyecto]
+proyectos (ConsEmpresa []) = []
+proyectos (ConsEmpresa rs) = sinRepetidos (proyectosDe rs) 
+
+proyectosDe :: [Rol] -> [Proyecto]
+--dada una lista de roles, devuelve la lista de proyectos en los cuales los empleados trabajan 
+--caso base 
+proyectosDe [] = []
+--caso recursivo 
+proyectosDe (r:rs) = proyectoDe r : proyectosDe rs 
+
+losDevSenior :: Empresa -> [Proyecto] -> Int 
+losDevSenior (ConsEmpresa rs) lp = cantDeDevsSenior rs lp 
+
+cantDeDevsSenior :: [Rol] -> [Proyecto] -> Int 
+--dada una lista de roles y una lista de proyectos, devuelve la cant de devs senior de esa empresa que esten 
+--trabajando en algun proyecto de la lista
+--caso base 
+cantDeDevsSenior [] _ = 0
+cantDeDevsSenior _ [] = 0 
+--caso recursivo
+cantDeDevsSenior (r:rs) lp = if esDevSenior r && trabajaEn r lp 
+                                then 1 + cantDeDevsSenior rs lp 
+                                    else cantDeDevsSenior rs lp
+
+esDevSenior :: Rol -> Bool 
+--dado un rol, indica si es un dev senior 
+esDevSenior (Developer Senior _) = True 
+esDevSenior (Developer _ _) = False 
+esDevSenior (Management _ _) = False 
+
+trabajaEn :: Rol -> [Proyecto] -> Bool 
+trabajaEn (Developer _ p) lp = pertenece p lp 
+trabajaEn (Management _ p) lp = pertenece p lp 
+
+cantQueTrabajanEn :: [Proyecto] -> Empresa -> Int 
+cantQueTrabajanEn lp (ConsEmpresa lr) = cantQueTrabajan lp lr
+
+cantQueTrabajan :: [Proyecto] -> [Rol] -> Int 
+--dada una lista de proyectos y una de roles, indica la cantidad de empleados que trabajan en alguno de los
+--proyectos de la lista
+--caso base 
+cantQueTrabajan [] _ = 0
+cantQueTrabajan _[] = 0
+--caso recursivo
+cantQueTrabajan lp (r:rs) = if trabajaEn r lp 
+                                then 1 + cantQueTrabajan lp rs 
+                                    else cantQueTrabajan lp rs 
+
+
+
+--observadora 
+proyectoDe :: Rol -> Proyecto
+proyectoDe (Developer _ p) = p
+proyectoDe (Management _ p) = p 
+
+--funcion para eliminar repetidos 
+sinRepetidos :: Eq a => [a] -> [a]
+--dada una lista, devuelve la misma sin repetidos 
+--caso base 
+sinRepetidos [] = []
+--caso recursivo
+sinRepetidos (a:as) = if pertenece a (sinRepetidos as)
+                        then sinRepetidos as 
+                            else a : sinRepetidos as 
 
 {-siempre en la recursion separo la cabeza de lista y trabajo con eso, entonces solo me queda saber que hago con el 
 resto de la lista, (que generalmente es aplicar la misma funcion, asi si funciona la logica de la cabeza de lista
