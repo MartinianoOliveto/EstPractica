@@ -1,0 +1,41 @@
+Tipos algebraicos 
+	Se definen a traves de constructores 
+		Los constructores pueden llevar argumentos 
+		Cada constructor expresa a un grupo de elementos 
+	Se acceden mediante pattern matching 
+		Los constructores se usan para preguntar 
+	Clasificacion
+		Enumerativo 
+			Varios constructores sin argumentos 
+		Registros
+			Un unico constructore con varios argumentos  
+		Sumas o variantes 
+			Varios constructores con argumentos 
+		Recursivos
+			Suma que usa el mismo tipo como argumento
+			 	
+Tipos algebraicos recursivos lineales 
+	Como se definen los tipos algebraicos recursivos?
+		Igual que otros tipos algebraicos
+		Pero se utiliza como argumento el tipo que se define 
+			Solamente en algunos constructores 
+			Los otros constituyen casos base 
+	Ejemplo
+		data Ingrediente = Salsa | Queso | Aceitunas Int | Anchoas | Anana 
+		data Pizza = Prepizza | Capa Ingrediente Pizza (Prepizza seria el caso base) 
+	Que forma tienen los elementos de Pizza?
+		Empiezan con un constructor 
+		Tienen argumentos que ya existen 
+			pizza0 = Prepizza 
+			pizza1 = Capa Salsa Prepizza -> Tengo que elegir un dato del tipo Pizza aca 	
+	Y las funciones?
+		Se usa recursion estructural
+		Un caso por cada constructor, y se puede usar la misma funcion que se define sobre las partes recursivas 
+
+Arboles 
+	Son mas complejos que las listas 
+	Para construir se usan constructores con argumentos
+	Para recorrer se utiliza recursion estructural 
+		Un caso por cada constructor
+		La misma funcion en las partes recursivas 	
+				
