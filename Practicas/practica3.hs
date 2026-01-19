@@ -175,3 +175,57 @@ toList EmptyT = []
 toList (NodeT n t1 t2) = toList t1 ++ n : toList t2 -- esto funciona, pero como sabe haskell como tiene que ordenarlo?
 --toList (NodeT n t1 t2) = toList t1 ... n ... toList t2 
 ------------------------------------ ++ --- :: ----------- aca pense, si agrego n a t2 solo me queda hacer append con t1 
+--10
+levelN :: Int -> Tree a -> [a]
+--contemplo si el arbol es vacio no hay nada 
+levelN _ EmptyT = []
+--si el nivel es 0 devuelvo lo que haya 
+levelN 0 (NodeT a _ _) = a : []
+--caso recursivo 
+levelN x (NodeT a t1 t2) = if x == 0
+                            then a : []
+                                else levelN (x-1) t1 ++ levelN (x-1) t2
+{-tratando de reescribir el caso recursivo con PM 
+levelN x (NodeT a t1 t2) = case a of 
+                                a > 0 -> levelN (x-1) t1 ++ levelN (x-1) t2 
+                                a == 0 -> a : []
+en a > 0 da error de parseo, tal vez se puede resolver con guardas, pero no hay ejemplos en el pdf de PM con guardas-}
+-- no se pudio jejejje 
+--11
+listPerLevel :: Tree a -> [[a]] 
+--caso base 
+listPerLevel EmptyT = []
+--caso recursivo 
+listPerLevel (NodeT a t1 t2) = [[a]] ++ listPerLevel t1 ++ listPerLevel t2 
+--no devuelve el resultado esperado, solo una lista de listas pero no ordenada por niveles 
+--12
+ramaMasLarga :: Tree a -> [a]
+--caso base 
+ramaMasLarga EmptyT = []
+--caso recursivo
+{--si tomo la rama mas larga una vez, voy a devolver todos los elementos de todas las ramas restantes
+ahi entra la recursion, debo elegir en todos los niveles la rama mas larga, asi estaria eligiendo el 
+"camino" mas largo--}
+ramaMasLarga (NodeT a t1 t2) = a : ramaMasLarga (ramaMasLargaEntre t1 t2)
+ramaMasLargaEntre :: Tree a -> Tree a -> Tree a 
+--dados dos arboles, devuelve el mas largo
+ramaMasLargaEntre a b = if heightT a > heightT b 
+                            then a 
+                                else b 
+--13 hacerlo despues, tiene pinta de que es complicadito 
+--2.2 Expresiones aritmeticas
+--lo que hace esto es plantear operaciones aritemticas como un arbol?
+data ExpA = Valor Int 
+            | Sum ExpA ExpA
+            | Prod ExpA ExpA
+            | Neg ExpA
+--1
+eval :: ExpA -> Int 
+--esto seria el caso base, cuando llego al valor
+eval (Valor x) = x 
+--caso recursivo
+eval (Sum x y) = eval x + eval y 
+eval (Prod x y) = eval x * eval y 
+eval (Neg x) = (-1) * eval x 
+--2
+--no lo entendi xd 
