@@ -1,1 +1,5 @@
+En recursion estructural sobre numeros, no necesito preguntar con un if, el caso base se encarga de cortar las recursion (se resuelve por PM)
+Siempre hay que pensar en hacer recursion sobre cada elemento y no tanto en el resultado, eso lo puedo resolver con una subtarea 
 
+
+VERIFICAR TODA LA PRACTICA EN BUSCA DE MEJORAR LO QUE YA ESTA HECHO Y TRATAR DE RESOLVER EL LO QUE NO SE PUDO 

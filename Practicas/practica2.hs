@@ -39,6 +39,10 @@ disyuncion (b:bs) = if b == False
 aplanar [[]] = []
 --caso recursivo
 aplanar (a:as) = a : aplanar as --a es una lista, por lo tanto que tengo que hacer aca??-}
+--
+--caso base 
+--caso recursivo 
+--
 --7 
 pertenece :: Eq a => a -> [a] -> Bool 
 --caso base 
@@ -338,6 +342,29 @@ cantQueTrabajan lp (r:rs) = if trabajaEn r lp
                                 then 1 + cantQueTrabajan lp rs 
                                     else cantQueTrabajan lp rs 
 
+asignadosPorProyecto :: Empresa -> [(Proyecto, Int)]
+asignadosPorProyecto (ConsEmpresa rs) = rolesAsignadosPorProyecto rs
+--una empresa es una lista de roles, le delego la recursion a una funcion que maneje [Rol]
+
+rolesAsignadosPorProyecto :: [Rol] -> [(Proyecto,Int)]
+--caso base 
+rolesAsignadosPorProyecto [] = []
+--recursion sobre listas
+rolesAsignadosPorProyecto (r:rs) = agregarATupla (proyectoDe r) (rolesAsignadosPorProyecto rs)
+--aca extraigo el proyecto de r para usarlo como argumento en la funcion que arma las tuplas
+--como es una recursion sobre listas, solo tengo que agregarlo, de eso se encarga la subtarea
+
+agregarATupla :: Proyecto -> [(Proyecto, Int)] -> [(Proyecto, Int)]
+--caso base 
+agregarATupla p [] = (p,1) : []
+--recursion sobre listas 
+agregarATupla p ((q,n):qns) = if p == q 
+                                then (q,n+1) : qns
+                                    else (q,n) : agregarATupla p qns 
+--aca accedo a la lista de tuplas y comparo proyectos, si esta en la lista de tuplas 
+--solo le sumo 1 a la cantidad, si no dejo la primer tupla y sigo recorriendo
+--si el proyecto no esta, llegara al caso base que se encarga de agregarlo
+
 
 
 --observadora 
@@ -354,6 +381,8 @@ sinRepetidos [] = []
 sinRepetidos (a:as) = if pertenece a (sinRepetidos as)
                         then sinRepetidos as 
                             else a : sinRepetidos as 
+
+
 
 {-siempre en la recursion separo la cabeza de lista y trabajo con eso, entonces solo me queda saber que hago con el 
 resto de la lista, (que generalmente es aplicar la misma funcion, asi si funciona la logica de la cabeza de lista
