@@ -182,9 +182,7 @@ levelN _ EmptyT = []
 --si el nivel es 0 devuelvo lo que haya 
 levelN 0 (NodeT a _ _) = a : []
 --caso recursivo 
-levelN x (NodeT a t1 t2) = if x == 0
-                            then a : []
-                                else levelN (x-1) t1 ++ levelN (x-1) t2
+levelN x (NodeT a t1 t2) =  levelN (x-1) t1 ++ levelN (x-1) t2
 {-tratando de reescribir el caso recursivo con PM 
 levelN x (NodeT a t1 t2) = case a of 
                                 a > 0 -> levelN (x-1) t1 ++ levelN (x-1) t2 
@@ -198,6 +196,8 @@ listPerLevel EmptyT = []
 --caso recursivo 
 listPerLevel (NodeT a t1 t2) = [[a]] ++ listPerLevel t1 ++ listPerLevel t2 
 --no devuelve el resultado esperado, solo una lista de listas pero no ordenada por niveles 
+
+--EN SU SOLUCION, FIDEL USA UNA SUBTAREA PARA JUNTAR POR NIVEL, ESO ME HACIA FALTA PARA QUE QUEDE ORDENADO
 --12
 ramaMasLarga :: Tree a -> [a]
 --caso base 

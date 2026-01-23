@@ -3,3 +3,9 @@ Siempre hay que pensar en hacer recursion sobre cada elemento y no tanto en el r
 
 
 VERIFICAR TODA LA PRACTICA EN BUSCA DE MEJORAR LO QUE YA ESTA HECHO Y TRATAR DE RESOLVER EL LO QUE NO SE PUDO 
+
+
+RECURSION SOBRE ARBOLES 
+f:: Tree a -> b 
+f EmptyT = ...
+f (NodeT x t1 t2) = x ... f t1 .... f t2 

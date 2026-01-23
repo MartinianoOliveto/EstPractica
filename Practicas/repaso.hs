@@ -38,3 +38,8 @@ aumentarIndice :: [(Int, a)] -> [(Int,a)]
 aumentarIndice [] = []
 aumentarIndice ((i,x):ixs) = (i+1, x) : aumentarIndice ixs 
 
+--ejemplo con booleanos
+hayMayorDeEdad :: [Persona] -> Bool 
+hayMayorDeEdad [] = False
+hayMayorDeEdad(p:ps) = esMayorDeEdad p || hayMayorDeEdad ps 
+--no usa condicionales 
