@@ -1,0 +1,94 @@
+Tipos abstractos de datos
+    Son una forma de definir tipos, con caracteristicas:
+        -Nombre y tipo
+        -Comportamiento esperado 
+    No se conoce como se implementan las operaciones 
+        -Oculta la representacion interna al usuario 
+
+Tipos de datos abstractos en Haskell
+    Se utilizan modulos; es un grupo de definiciones que tiene:
+        -Nombre, y una lista de las operaciones que son visibles 
+        -Implmentacion de cada una de las operaciones y otras auxiliares necesarias 
+        -Opcionalmente indica que otros modulos utiliza 
+    Sintaxis: 
+        module <nomnre> (<interfaz>) where <implementacion> 
+
+Ejemplo TAD Persona
+    module Persona (Persona, nacer, edad, nombre, apellido, crecer)
+        where 
+    data Persona = .....
+    ---funciones--
+    (De todo esto, falta la implementacion)
+
+-La interfaz es la unica manera de usar un elemento
+-Asi se definen todas las formas posibles de uso
+-No hace falta comocer la implementacion para usarlo
+
+Observaciones 
+    -Cada modulo va en su propio archivo
+    -El nombre del archivo es igual al del modulo
+    -Para usar un modulo debe usarse import 
+    -Solamente pueden usarse los elementos de la interfaz 
+Para conocer un TAD alcanza con conocer su interfaz 
+    -Pueden definirse muchas operaciones con las operaciones de interfaz, SIN conocer la implementacion 
+
+Diseños de TADs
+    -Requiere pensar en todos los usos que se le quiere dar
+    -Una interfaz mal diseñada puede impedir o dificultar ciertas tareas 
+
+-NO SE PUEDE HACER PATTERN MATCHING SOBRE TADs, SOLO SOBRE CONSTRUCTORES 
+
+-Los TADs se dividen en roles 
+    -Diseñador 
+        -Diseña las operaciones de la interfaz 
+    -Usuario
+        -Usa las operaciones de la interfaz 
+    -Implementador
+        -Decide la representacion interna 
+        -Fija el invariante de representacion 
+        -Provee la implementacion de las operaciones
+ 
+-Eficiencia 
+    -Mirar como se comporta la funcion a medir 
+        -En el peor caso posible 
+        -En funcion de la cantidad de datos de la estructura 
+    -Se va a usar una clasificacion para esto
+        -En base al comportamiento general en peor caso 
+        -Indicador grueso de eficiencia 
+
+    -Clasificaciones 
+        -Costo constante O(1)
+            -La funcion tarda siempre lo mismo 
+            -No depende de la cantidad de elementos de la estructura 
+            -Ejemplos: head, tail, null 
+        -Costo lineal O(n)
+            -Por cada elemento de la estructura,solamente se hacen operaciones de costo constante
+            -Ejemplos: lenght, sum, elem 
+        -Costo cuadratico 
+            -Por cada elemento de la estructura, se hacen operaciones de costo lineal (en el peor caso)
+        -Costo cubico O(n2)
+            -Por cada elemento de la estructura, se hacen operaciones de coto cuadratico
+            -Tambien existen operaciones que elevan a la cuarta, a la quinta, etc (usando una operacion del costo previo por cada elemento)
+
+-TADs clasicos 
+    -Pilas
+    -Colas 
+    -Conjuntos 
+
+-Stack 
+    -Se puede ingresar, consultar y eliminar elementos 
+    -La propiedad que cumple es LIFO (last in, first out)
+-Queue 
+    -Se puede ingresar, consultar y eliminar elementos 
+    -La propiedad que cumplen es FIFO (first in, first out)
+-Set 
+    -Se pueden ingresar elementos y consultar existencia 
+    -La propiedad que cumplen es: no hay elementos repetidos 
+
+-Criterios de eleccion para implementaciones 
+    -En general hay un balance, alguna operacion es mas cara y se elige cual o todas son baratas, pero se usa mas memoria 
+    -Depende de que operaciones sean de uso mas frecuente, debe tenerse en cuenta el contexto de uso 
+
+
+     
+
