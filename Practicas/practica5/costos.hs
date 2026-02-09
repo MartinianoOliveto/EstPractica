@@ -28,13 +28,13 @@ factoriales (x:xs) = factorial x : factoriales xs
 {-Costo: O(n^2) 
 Observacion: por cada elemento de la lista, aplico factorial, que es de costo O(n)
 -}
-pertenece :: Eq a => a -> a -> [a] -> Bool
+pertenece :: Eq a => a -> [a] -> Bool
 pertence n [] = False 
 pertenece n (x:xs) = n == x || pertenece n xs 
 {-Costo: O(n) (lineal)
 por cada elemento de la lista, aplica una operacion de nivel O(1) (el ==)
 -}
-sinRepetidos :: Eq a => [a] -> a 
+sinRepetidos :: Eq a => [a] -> [a] 
 sinRepetidos [] = []
 sinRepetidos (x:xs) = if pertence x xs 
                         then sinRepetidos xs 
