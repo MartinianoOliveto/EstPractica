@@ -1,0 +1,7 @@
+Priority Queue 
+    Se parecen a las Queues normales pero a diferencia de las Queues normales (FIFO), siempre sale el elemento con mayor prioridad
+
+Map 
+    Cumple la funcion de un diccionario; relaciona una clave con un valor (o varios)
+
+    

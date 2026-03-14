@@ -1,0 +1,13 @@
+Heaps 
+    Para garantizar las condiciones de un arbol, se usan invariantes, esto, logra con invariantes, a estos arboles se los llaman Binary Search Tree (BST), a lo boca 
+    seria Arbol Binario de Busqueda 
+
+    Orden del arbol 
+        data Tree a = EmptyT | NodeT a (Tree a) (Tree a)
+        -Invariantes de BST: en (NodeT x ti td)
+            -todos los elementos de ti son menores que x 
+            -todos los elementos de td son mayores que x 
+            -ti y td tambien cumplen el invariante de BST
+
+
+                    
