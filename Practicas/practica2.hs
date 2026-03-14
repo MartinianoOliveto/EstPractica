@@ -98,20 +98,10 @@ reversa (x:xs) = agregarAlFinal (reversa xs) x
 --14
 zipMaximos :: [Int] -> [Int] -> [Int]
 --caso base 
-zipMaximos [] [] = error "Ambas listas no pueden ser vacias"
-zipMaximos [] _ = [] --aca deberia devolver un error??
-zipMaximos _ [] = [] --aca deberia devolver un error??
---caso recursivo 
-zipMaximos x y =  elMayorDe x : elMayorDe y : []
-
-elMayorDe :: [Int] -> Int 
---dada una lista de numeros, devuelve el mayor 
---PRECOND: La lista no puede ser vacia 
---caso base 
-elMayorDe [] = error "La lista no puede ser vacia"
-elMayorDe (n:[]) = n --si solo hay un elemento, lo devuelvo   
---caso recursivo
-elMayorDe (n:ns) = max n (elMayorDe ns) 
+zipMaximos [] _ = []
+zipMaximos _ [] = []
+--caso recursivo  
+zipMaximos (x:xs) (y:ys) = max x y : zipMaximos xs ys 
 --15 
 elMinimo :: Ord a => [a] -> a 
 --caso base 
@@ -174,7 +164,7 @@ mayoresA _ [] = []
 --caso recursivo 
 mayoresA x (p:ps) = if edad p > x 
                         then p : mayoresA x ps
-                            else mayoresA x ps 
+                        else mayoresA x ps 
 --2 
 promedioEdad :: [Persona] -> Int 
 --precondicion: la lista no puede ser vacia 
