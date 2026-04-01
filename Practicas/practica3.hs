@@ -101,6 +101,11 @@ arbolSimple :: Tree Int --con esto se fuerza el tipo a Int, Haskell lo tomaba co
 arbolSimple = NodeT 10 
                 (NodeT 5 EmptyT EmptyT) 
                     (NodeT 15 EmptyT EmptyT)
+arbolEjemplo :: Tree Int 
+arbolEjemplo = (NodeT 1 (NodeT 2 (NodeT 3 EmptyT EmptyT)
+                                EmptyT)
+                (NodeT 4 (NodeT 5 EmptyT EmptyT)
+                        EmptyT))
 arbolComplejo :: Tree Int
 arbolComplejo = NodeT 50
                     (NodeT 25
@@ -190,11 +195,6 @@ levelN x (NodeT a t1 t2) = case a of
 en a > 0 da error de parseo, tal vez se puede resolver con guardas, pero no hay ejemplos en el pdf de PM con guardas-}
 -- no se pudio jejejje 
 --11
-listPerLevel :: Tree a -> [[a]] 
---caso base 
-listPerLevel EmptyT = []
---caso recursivo 
-listPerLevel (NodeT a t1 t2) = [[a]] ++ listPerLevel t1 ++ listPerLevel t2 
 --no devuelve el resultado esperado, solo una lista de listas pero no ordenada por niveles 
 
 --EN SU SOLUCION, FIDEL USA UNA SUBTAREA PARA JUNTAR POR NIVEL, ESO ME HACIA FALTA PARA QUE QUEDE ORDENADO
@@ -229,3 +229,28 @@ eval (Prod x y) = eval x * eval y
 eval (Neg x) = (-1) * eval x 
 --2
 --no lo entendi xd 
+
+
+
+listPerLevel :: Tree a -> [[a]]
+listPerLevel EmptyT = []
+listPerLevel (NodeT x t1 t2)=
+    [[x]] ++ armarNiveles (listPerLevel t1) (listPerLevel t2)
+    
+    
+armarNiveles :: [[a]] -> [[a]] -> [[a]]
+armarNiveles [] yss = yss
+armarNiveles xss [] = xss
+armarNiveles (xs:xss) (ys:yss) = (xs ++ ys) : armarNiveles xss yss
+
+todosLosCaminos :: Tree a -> [[a]]
+todosLosCaminos EmptyT = []
+todosLosCaminos (NodeT x t1 t2) =
+    armarCaminos x (todosLosCaminos t1) (todosLosCaminos t2)
+
+armarCaminos :: a -> [[a]] -> [[a]] -> [[a]]
+armarCaminos x izq der = [[x]] ++ anteponer x izq ++ anteponer x der 
+
+anteponer :: a -> [[a]] -> [[a]]
+anteponer _ [] = []
+anteponer x (ys:yss) = (x:ys) : anteponer x yss 
