@@ -156,4 +156,119 @@ esIgual ::Eq a => a -> [a] -> Bool
 esIgual a [] = False 
 esIgual a (b:bs) = a == b || esIgual a bs 
 
+--lobos 
+type Presa = String --nombre de presa 
+type Territorio = String --nombre de territorio 
+type Nombre = String --nombre de lobo
+data Lobo = Cazador Nombre [Presa] Lobo Lobo Lobo |
+            Explorador Nombre [Territorio] Lobo Lobo |
+            Cria Nombre 
+                deriving Show 
+data Manada = M Lobo 
+    deriving Show 
 
+--2 
+buenaCaza :: Manada -> Bool 
+buenaCaza m =  cantPresas m > cantCrias m  
+
+cantCrias :: Manada -> Int 
+cantCrias (M l) = cantCriasL l 
+
+cantCriasL :: Lobo -> Int 
+--caso base 
+cantCriasL (Cria _) = 1 
+--caso recursivo 
+cantCriasL (Cazador _ _ l1 l2 l3) = cantCriasL l1 + cantCriasL l2 + cantCriasL l3  
+cantCriasL (Explorador _ _ l1 l2) = cantCriasL l1 + cantCriasL l2 
+
+cantPresas :: Manada -> Int 
+cantPresas (M l) = cantPresasL l 
+
+cantPresasL :: Lobo -> Int
+--caso base 
+cantPresasL (Cria _) = 0
+--caso recursivo 
+cantPresasL (Cazador _ ls l1 l2 l3) = length ls + cantPresasL l1 + cantPresasL l2 
+                                        + cantPresasL l3
+cantPresasL (Explorador _ _ l1 l2) = cantPresasL l1 + cantPresasL l2 
+--------------------------------------------------------------------------------------
+{-elAlfa :: Manada -> (Nombre, Int)
+elAlfa (M l) = elAlfaL l 
+
+elAlfaL :: Lobo -> (Nombre, Int)
+--caso base 
+elAlfaL (Cria n) = (n,0)
+--caso recursivo 
+--el explorador tiene 2 hijos, busco al alfa ahi 
+elAlfaL (Explorador _ _ l1 l2) = elQueCazoMasEntre (elAlfaL l1) (elAlfaL l2)
+--debo comprarar si cazo mas el lobo actual, o sus hijos
+elAlfaL (Cazador n ls l1 l2 l3) = (n,length ls) > cantDePresas -}
+
+elAlfa :: Manada -> (Nombre, Int)
+elAlfa (M l) = elQueMasCazo (tuplasDeLobos l)
+
+tuplasDeLobos :: Lobo -> [(Nombre, Int)]
+--caso base 
+tuplasDeLobos (Cria n) = [(n,0)]
+--caso recursivo 
+tuplasDeLobos (Cazador n ls l1 l2 l3) = (n, length ls) : tuplasDeLobos l1 ++ 
+                                        tuplasDeLobos l2 ++ tuplasDeLobos l3 
+tuplasDeLobos (Explorador n _ l1 l2) = (n,0) : tuplasDeLobos l1 ++ tuplasDeLobos l2 
+
+elQueMasCazo :: [(Nombre, Int)] -> (Nombre, Int)
+elQueMasCazo (lp:lps) = elQueMasCazoEntre lp lps
+
+elQueMasCazoEntre :: (Nombre, Int) -> [(Nombre, Int)] -> (Nombre, Int)
+elQueMasCazoEntre x [] = x
+elQueMasCazoEntre (a,b) ((l,p):lps) = if b > p
+                                        then elQueMasCazoEntre (a,b) lps 
+                                        else elQueMasCazoEntre (l,p) lps 
+
+
+
+manada1 :: Manada
+--manada un solo cazador, mala caza 
+manada1 =M(Cazador "Akela" ["ciervo","conejo"]
+            (Explorador "Raksha" ["Norte"]
+              (Cria "Luna")
+              (Cria "Rayo")
+            )
+            (Cazador "Kiba" ["ciervo","jabalí","conejo"]
+              (Cria "Sombra")
+              (Cria "Nube")
+              (Cria "Colmillo")
+            )
+            (Cria "Chispa")
+        )
+--manada con varios cazadores, buena caza 
+manada2 :: Manada
+manada2 =M(Cazador "Thor" ["ciervo","conejo"]
+            (Cazador "Loki" ["jabalí"]
+              (Cria "Luna")
+              (Cria "Rayo")
+              (Cria "Sombra")
+            )
+            (Explorador "Freya" ["Norte"]
+              (Cazador "Fenrir" ["ciervo","jabalí","conejo","oveja"]
+                  (Cria "Nube")
+                  (Cria "Colmillo")
+                  (Cria "Humo")
+              )
+              (Cria "Bruma")
+            )
+            (Cazador "Odin" ["conejo","conejo","ciervo","ciervo"]
+              (Cria "Chispa")
+              (Cria "Fuego")
+              (Cria "Eco")
+            )
+        )
+manada3 :: Manada
+--manada con cazadores en 0 presas  
+manada3 =M(Explorador "Atlas" ["Sur"]
+            (Cria "Luna")
+            (Cazador "Rex" []
+              (Cria "Nube")
+              (Cria "Sombra")
+              (Cria "Rayo")
+            )
+        )
