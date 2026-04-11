@@ -232,7 +232,7 @@ eval (Neg x) = (-1) * eval x
 
 
 
-listPerLevel :: Tree a -> [[a]]
+{-listPerLevel :: Tree a -> [[a]]
 listPerLevel EmptyT = []
 listPerLevel (NodeT x t1 t2)=
     [[x]] ++ armarNiveles (listPerLevel t1) (listPerLevel t2)
@@ -253,4 +253,33 @@ armarCaminos x izq der = [[x]] ++ anteponer x izq ++ anteponer x der
 
 anteponer :: a -> [[a]] -> [[a]]
 anteponer _ [] = []
-anteponer x (ys:yss) = (x:ys) : anteponer x yss 
+anteponer x (ys:yss) = (x:ys) : anteponer x yss -}
+
+todosLosCaminos :: Tree a -> [[a]]
+--caso base 
+todosLosCaminos EmptyT = []
+--caso recursivo 
+todosLosCaminos (NodeT a t1 t2) = [a] : agregarAlPrincipio a (todosLosCaminos t1) ++ agregarAlPrincipio a (todosLosCaminos t2)
+--cuando llegue a una hoja, agregarAlPrincipio va a recibir una lista vacia 
+
+agregarAlPrincipio :: a -> [[a]] -> [[a]]
+--caso base 
+agregarAlPrincipio _ [] = [] 
+--aca cuando recibo una lista vacia, quiere decir que llegue a una hoja, no debo agregar nada 
+--caso recrsivo 
+agregarAlPrincipio a (xs:xss) = (a:xs) : agregarAlPrincipio a xss 
+
+todosLosMaximales :: Tree a -> [[a]]
+todosLosMaximales t = soloMaximales (length(ramaMasLarga t)) (todosLosCaminos t)
+
+soloMaximales :: Int -> [[a]] -> [[a]]
+soloMaximales _ [] = []
+soloMaximales n (xs:xss) = if length xs == n 
+                                then xs : soloMaximales n xss 
+                                else soloMaximales n xss
+
+arbol :: Tree Int 
+arbol = (NodeT 1 (NodeT 2 (NodeT 3 EmptyT EmptyT)
+                                EmptyT)
+                        (NodeT 4 (NodeT 5 EmptyT EmptyT)
+                                EmptyT))
