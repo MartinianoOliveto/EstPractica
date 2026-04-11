@@ -27,7 +27,7 @@ sacar :: Color -> Celda -> Celda
 sacar x CeldaVacia = CeldaVacia 
 sacar x (Bolita co ce) = if x == co
                             then ce 
-                                else sacar x ce 
+                                else (Bolita co (sacar x ce)) 
 -- lo que hace esta funcion es sacar el color si lo encuentra, si no saca todos 
 --aunque la funcion en este caso es total, deberia devolver la celda original, no vaciarla 
 --esto podria solucionarlo con una subtarea??
