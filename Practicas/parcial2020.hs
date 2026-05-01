@@ -63,6 +63,10 @@ armarTuplasF (f,n) [] = (f,n) : []
 armarTuplasF (f,n) ((f',n'):fns) = if esMismaFeta f f'
                                         then ((f,(n'+n)):fns)
                                         else (f',n') : armarTuplasF (f,n) fns 
+                                        --deberia ordenar aca?
+--Como lo veo, si o si tengo que ordenar la misma cantidad, asi que no me afecta 
+--sacarlo en otro recorrido, entonces es lo mismo ordenar a medida que armas 
+-- o ordenar despues 
 
 esMismaFeta :: TipoDeFeta -> TipoDeFeta -> Bool 
 esMismaFeta Jamon Jamon = True 
@@ -74,6 +78,7 @@ esMismaFeta _ _ = False
 ordenarT :: [(TipoDeFeta, Int)] -> [(TipoDeFeta, Int)] 
 ordenarT [] = []
 ordenarT ((f,n):fns) = ordenar (f,n) (ordenarT fns)
+--agarro el primer elemento y lo ordeno en la lista ordenada 
 
 ordenar :: (TipoDeFeta, Int) -> [(TipoDeFeta, Int)] -> [(TipoDeFeta, Int)] 
 --caso base 
