@@ -283,3 +283,17 @@ arbol = (NodeT 1 (NodeT 2 (NodeT 3 EmptyT EmptyT)
                                 EmptyT)
                         (NodeT 4 (NodeT 5 EmptyT EmptyT)
                                 EmptyT))
+
+
+
+
+losMaximales :: Tree a -> [[a]]
+losMaximales EmptyT          = []
+losMaximales (NodeT a EmptyT EmptyT) = [[a]]
+losMaximales (NodeT a t1 t2) = agregar a (losMaximales t1) ++ agregar a (losMaximales t2)
+--                                             [[]]         ++             [[]]
+
+agregar :: a -> [[a]] -> [[a]]
+agregar x []       = []
+agregar x (ys:yss) = (x : ys) : agregar x yss 
+-- 4 [[1],[2]]        [3,2,1] :    [[]]
