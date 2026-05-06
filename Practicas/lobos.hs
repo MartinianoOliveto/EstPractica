@@ -32,3 +32,19 @@ manada2 = M (Cazador "" []
               )
               (Cria ...)
             )
+
+data Objeto = Tesoro | Chatarra
+  deriving Show 
+data Cofre = Cofre [Objeto]
+  deriving Show 
+data Mapa = Fin Cofre | Bifurcacion Cofre Mapa Mapa
+  deriving Show 
+
+caminoAlTesoro :: Mapa -> [Dir]
+--hay un tesoro y es unico 
+(Fin c) = [] 
+(Bifurcacion c t1 t2) = if hayTesoroEnCofre c
+                        then []
+                        else if hayTesoro t1
+                            then Izq : caminoAlTesoro t1
+                            else Der : caminoAlTesoro t2 

@@ -1,13 +1,50 @@
-Heaps 
-    Para garantizar las condiciones de un arbol, se usan invariantes, esto, logra con invariantes, a estos arboles se los llaman Binary Search Tree (BST), a lo boca 
-    seria Arbol Binario de Busqueda 
+Repaso:
+    Los TADS quedan definidos por su interfaz.
 
-    Orden del arbol 
-        data Tree a = EmptyT | NodeT a (Tree a) (Tree a)
-        -Invariantes de BST: en (NodeT x ti td)
-            -todos los elementos de ti son menores que x 
-            -todos los elementos de td son mayores que x 
-            -ti y td tambien cumplen el invariante de BST
+    Induce roles en la manera de usarlo.
 
+    Requieren ciertas herramientas para implementarlos.
+        Invariantes de representacion, eficiencia.
+
+Necesario aprender:
+    Como usuario: 
+        Usar la interfaz sin conocer implementaciones.
+    Como implementador:
+        Eleccion de representaciones eficaces.
+        Formas de invariantes utiles para mejora eficiencia.
+        Mediciones de eficiencia para tener alternativas.
+
+Costo de busqueda en arbol: 
+    Se recorre UNA rama del arbol completa (peor caso).
+    Suponiendo que n es la cantidad de elementos de un arbol, que cantidad de elementos tiene una rama?
+        n = cant de elementos arbol
+        h = cant de elementos rama 
+            n = 2^h-1
+    Suponiendo esto: n = 2^h-1, cuanto vale h?
+    El numero h tal que 2^h es igual a n.
+        Se llama "logaritmo en base 2" 
+    h = log n 
+        h = cuantas veces hay que multiplicar por 2 para dar n?
+
+Costo logaritmico : Esta entre constante y lineal. O(log n)
+Eneloguene : Hasta operaciones logaritmicas por cada elemento O(n log n)
+
+El costo logaritmico en arbol se mantiene si este esta balanceado, de ahi sale el logaritmo, pero lineal 
+sigue siendo el peor caso.
+
+Costo Eneloguene: n tamaño maximo de un arbol, t cantidad de arboles. 
+Cada operacion es logaritmica en un arbol: O(log n)
+Hay t operaciones: el costo es O(t log n)
+
+Para mejorar eficiencia de TADs anteriores, necesitamos invariantes, para garantizar condiciones.
+Binary Search Tree (BST): data Tree a = EmptyT | NodeT a (Tree a) (Tree a)
+Invariante de BST: (NodeT a ti ta)
+                    Todos los elementos de ti son menores que a 
+                    Todos los elementos de td son mayores que x 
+                    ti y td tambien cumplen invariante BST.
+En el peor caso, no esta balanceado, costo lineal, si esta balanceado, logaritmico.
+Cuando borro en un BST, queda desbalanceado, debo agarrar un elemento para que siga siendo BST, dos posibles
+candidatos son: del subarbol izquierda, el que este mas a la derecha, y el del subarbol derecho, el que este 
+mas a la izquierda, debo rearmar. 
 
                     
