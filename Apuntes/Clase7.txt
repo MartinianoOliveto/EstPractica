@@ -47,4 +47,45 @@ Cuando borro en un BST, queda desbalanceado, debo agarrar un elemento para que s
 candidatos son: del subarbol izquierda, el que este mas a la derecha, y el del subarbol derecho, el que este 
 mas a la izquierda, debo rearmar. 
 
+Arboles balanceados: AVLs 
+    Para mantener balance, necesito invariantes.
+    Invariante de AVL: en NodeT x ti td 
+        La diferencia de alturas entre ti y tf es menor o igual a 1 
+        ti y d tambien cumplen el invariante de AVL 
+
+    Rebalanceo de AVLs, un elemento debe subir, y otro bajar. 
+    Cuando tengo diferencia de 2, sube el del medio y bajan los dos, el menor del del medio va a la izquierda
+    el mayor a la derecha, asi sigo garantizando BST 
+    Para implementarlo eficiente, debe mantenerse la altura:
+        data AVL a = EmptyAVL | NodeAVL Int a (AVL a) (AVL a)
+
+    Como garantizo el invariante de AVL?
+        Al insertar y borrar, se requiere ver cuales lugares pueden alterar eso.
+            Donde se reconstruyen AVLs 
+            Cada nodo debe revisarse
+
+Costos logaritmicos en PQ.
+    Hay que usar arboles, llamados heaps 
+    Invariante Heap:
+        La raiz es el minimo de todos los elementos
+        Los subarboles cumplen el invariante de heap 
+    Invariante full tree:
+        Todos los niveles salvo, quizas el ultimo, estan completos 
+        El ultimo no tiene agujeros de izquierda a derecha
+    Ventajas de full tree: 
+        Tiene un unico lugar donde insertar y donde borrar 
+        Al usar memoria, se puede implementar muy eficiente
+    Desventajas en el modelo declarativo:
+        Se precisan datos adicionales para ubicar el lugar de insercion/borrado
+    Al combinar ambos invariantes, se puede deducir las operaciones de insercion y borrado
+
+data Dir = Izq | Der 
+data PriorityQueue a = PQ [Dir] (Tree a)
+    INV.REP: en (PQ pos t)
+        t cumple ser un heap
+        t cumple ser un arbol lleno 
+        pos indica el camino hasta la posicion de insercion en t 
+
+A la hora de insertar, como solo tengo 1 lugar para insertar, inserto y si es necesario "floto" el elemento
+hasta que quede ordenado
                     
